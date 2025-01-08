@@ -10,6 +10,8 @@ body {
 
 /* Style du header */
 header {
+    display: flex;
+    align-items: center;
     text-align: center;
     background-color: #4CAF50;
     color: white;
@@ -25,9 +27,28 @@ header p {
     margin: 5px 0;
 }
 
+header button{
+    flex-grow: 1;
+    margin: auto;
+}
+
 section {
     padding-right: 50px;
     padding-left: 50px;
+}
+
+.navigation{
+    flex-grow: 1;
+    align-items: center;
+}
+
+.logo {
+    flex-grow: 1;
+    align-items: center;
+}
+.logo img {
+    width: 50px;
+    margin-right: 10px;
 }
 
 /* Introduction - Image + Texte */

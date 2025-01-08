@@ -1,0 +1,86 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f8f8f8;
+    color: #333;
+}
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #d7e3d4;
+    padding: 20px;
+}
+.logo {
+    display: flex;
+    align-items: center;
+}
+.logo img {
+    width: 50px;
+    margin-right: 10px;
+}
+nav a {
+    margin: 0 15px;
+    text-decoration: none;
+    color: #333;
+    font-weight: bold;
+}
+nav a:hover {
+    text-decoration: underline;
+}
+.sign-up-button {
+    background-color: #f4a261;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.sign-up-button:hover {
+    background-color: #e76f51;
+}
+.main {
+    padding: 20px;
+}
+.about {
+    background-color: #d7e3d4;
+    padding: 20px;
+    margin: 20px;
+    border-radius: 10px;
+}
+.about-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.about-content img {
+    width: 300px;
+    border-radius: 10px;
+}
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+table, th, td {
+    border: 1px solid #ccc;
+}
+th, td {
+    padding: 10px;
+    text-align: center;
+}
+th {
+    background-color: #d7e3d4;
+}
+.tarifs article {
+    margin-bottom: 20px;
+}
+footer {
+    text-align: center;
+    padding: 10px;
+    background-color: #d7e3d4;
+    position: relative;
+    bottom: 0;
+    width: 100%;
+}
