@@ -12,10 +12,13 @@
 <header>
         <nav class="navigation">
             <a href="#">Accueil</a>
-            <a href="#">Inscription</a>
+            <a href="#">Planning</a>
             <a href="#">Nous Contacter</a>
         </nav>
-        <button class="sign-up-button">S'inscrire</button>
+        <div>
+            <button class="sign-up-button">S'inscrire</button>
+            <button class="sign-up-button">Se connecter</button>
+        </div>
     </header>
     <div class="design-entete">
         <img src="Template/Fleur.png" alt="fleur">
