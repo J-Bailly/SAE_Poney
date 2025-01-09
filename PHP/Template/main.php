@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Poney Club Grand Galop</title>
-    <link rel="stylesheet" href="../css/main.css">
+    <link rel="stylesheet" href="../css/styles.css">
 </head>
 
 <body>
@@ -21,7 +21,7 @@
         </div>
         <button class="sign-up-button">S'inscrire</button>
     </header>
-
+    <main>
     <section class="introduction">
         <img src="logo_cheval.png" alt="Poneys au poney club Grand Galop">
         <p>Bienvenue au poney club "Grand Galop", un club d’équitation situé au cœur de la Sologne. Nos poneys et chevaux, accompagnés par des moniteurs expérimentés, sont prêts à vous accueillir pour des moments inoubliables.</p>
@@ -55,10 +55,10 @@
             <li>Les cotisations annuelles sont à régler en début d’année et chaque cours réservé est facturé individuellement.</li>
         </ul>
     </section>
-
-    <footer>
+    </main>
+    <div class="footer">
         <p>&copy; 2024 Poney Club Grand Galop | Tous droits réservés | Contactez-nous pour plus d'informations.</p>
-    </footer>
+    </div>
 </body>
 
 </html>

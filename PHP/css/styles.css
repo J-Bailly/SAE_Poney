@@ -2,14 +2,14 @@ body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #f8f8f8;
+    background-color: #fcfaee;
     color: #333;
 }
 header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: #d7e3d4;
+    background-color: #A5B68D;
     padding: 20px;
 }
 .logo {
@@ -76,11 +76,16 @@ th {
 .tarifs article {
     margin-bottom: 20px;
 }
-footer {
+.footer {
+    position: fixed;
+    left: 0;
+    bottom: 0;
     text-align: center;
     padding: 10px;
-    background-color: #d7e3d4;
-    position: relative;
-    bottom: 0;
+    background-color: #A5B68D;
     width: 100%;
+}
+
+main {
+    margin: 20px;
 }

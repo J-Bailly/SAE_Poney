@@ -44,8 +44,8 @@ section {
 
 .logo {
     flex-grow: 1;
-    align-items: center;
 }
+
 .logo img {
     width: 50px;
     margin-right: 10px;
