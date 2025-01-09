@@ -15,22 +15,22 @@
             <a href="#">Inscription</a>
             <a href="#">Nous Contacter</a>
         </nav>
+        <button class="sign-up-button">S'inscrire</button>
+    </header>
+    <div class="design-entete">
+        <img src="Template/Fleur.png" alt="fleur">
         <div class="logo">
             <img src="Template/logo_cheval.png" alt="KavalKenny Klub Logo">
             <h1>KavalKenny Klub</h1>
         </div>
-        <button class="sign-up-button">S'inscrire</button>
-    </header>
+        <div class="inverser">
+            <img src="Template/Fleur.png" alt="fleur">
+        </div>
+    </div>
     <main>
-    <section class="introduction">
-        <img src="logo_cheval.png" alt="Poneys au poney club Grand Galop">
-        <p>Bienvenue au poney club "Grand Galop", un club d’équitation situé au cœur de la Sologne. Nos poneys et chevaux, accompagnés par des moniteurs expérimentés, sont prêts à vous accueillir pour des moments inoubliables.</p>
-    </section>
-
     <section class="services">
         <h2>Nos services</h2>
         <div class="service-item">
-            <img src="logo_cheval.png" alt="Cours d'équitation">
             <h3>Cours d'équitation</h3>
             <p>Nous proposons des cours individuels et collectifs (jusqu'à 10 personnes) pour tous les niveaux, de l’initiation au perfectionnement.</p>
         </div>

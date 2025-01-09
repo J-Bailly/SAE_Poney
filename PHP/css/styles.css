@@ -9,22 +9,51 @@ header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: #A5B68D;
+    background-color: #fcfaee;
     padding: 20px;
+}
+.inverser {
+    transform: scaleX(-1);
+}
+.design-entete {
+    background-color: #A5B68D;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-inline: 20px;
+}
+
+.design-entete img {
+    width: 150px;
+    margin-right: 10px;
 }
 .logo {
     display: flex;
-    align-items: center;
+    align-items: center;    /* Centrer le texte et l'image verticalement */
+    justify-content: center; /* Centrer le logo horizontalement */
 }
-.logo img {
-    width: 50px;
-    margin-right: 10px;
+nav {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 2.4em;
 }
 nav a {
     margin: 0 15px;
     text-decoration: none;
     color: #333;
     font-weight: bold;
+    position: relative;
+}
+nav a:not(:last-child)::after {
+    content: "";
+    position: absolute;
+    margin-right: -22px;
+    top: 0;
+    right: 0;
+    width: 2px; /* largeur de la barre */
+    height: 100%;
+    background-color: #333; /* couleur de la barre */
 }
 nav a:hover {
     text-decoration: underline;
@@ -36,9 +65,12 @@ nav a:hover {
     padding: 10px 20px;
     border-radius: 5px;
     cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    font-size: 2em;
 }
 .sign-up-button:hover {
     background-color: #e76f51;
+    transition: background-color 0.3s ease, transform 0.2s ease;
 }
 .main {
     padding: 20px;
