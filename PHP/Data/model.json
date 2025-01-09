@@ -1,0 +1,28 @@
+[
+    {
+        "type": "text",
+        "name": "mytext",
+        "required": false
+    },
+    {
+        "type": "hidden",
+        "name": "hiddenfield",
+        "required": false
+    },
+    {
+        "type": "textarea",
+        "name": "mytextarea",
+        "required": true
+    },
+    {
+        "type": "checkbox",
+        "name": "mycheckbox",
+        "required": false,
+        "value": true
+    },
+    {
+        "type": "label",
+        "name": "mylabel",
+        "required": true
+    }
+]
