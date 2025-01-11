@@ -15,59 +15,37 @@ use View\Template;
 $loader = new DataLoaderJson("Data/model.json");
 $form = $loader->getData();
 
-
-$questions = [];
-
-// ob_start();
-
-foreach($form as $field) {
-    $className = 'tools\\type\\'.ucfirst($field['type']);
-    // echo new $className($field['name'], $field['required']).PHP_EOL;
-    $questions[] = (new $className($field['name'], $field['required']));
-}
-
-// $content = ob_get_clean();
-
-// die();
-
-// $text = new Text('myinput', false, 'coucou');
-// echo $text->render().PHP_EOL;
-
-// $checkbox = new Checkbox('mycheckbox', true);
-// echo $checkbox->render().PHP_EOL;
-
-// $hidden = new Hidden('myhidden');
-// echo $hidden->render().PHP_EOL;
-
-// echo new Text('mytexttostring').PHP_EOL;
-
-// echo new Textarea('mytextarea', true, 'default value').PHP_EOL;
-
-// echo new Label('mylabel', true, "1. Quelle est la réponse ultime ?").PHP_EOL;
-
-// echo new Label('mylabel', true, "2. Quelle est la couleur du cheval blanc d'Henri IV ?").PHP_EOL;
-
-// echo new Label('mylabel', true, "3. Quelles sont les couleurs du drapeau français ?").PHP_EOL;
-
-
-
-$action = $_REQUEST['action'] ?? false;
-
-ob_start();
-switch($action) {
-    case 'submit':
-        include 'Action/answer.php';
-        break;
-    default:
-        include 'Action/form.php';
-        break;
-}
-
-$content = ob_get_clean();
-
-$template = new Template("Template");
-$template->setLayout("main");
-$template->setContent($content);
-
-echo $template->compile();
 ?>
+<?php $title = "Le blog de l'AVBN"; ?>
+
+<?php ob_start(); ?>
+	<section class="services">
+        <h2>Nos services</h2>
+        <div class="service-item">
+            <h3>Cours d'équitation</h3>
+            <p>Nous proposons des cours individuels et collectifs (jusqu'à 10 personnes) pour tous les niveaux, de l’initiation au perfectionnement.</p>
+        </div>
+        <div class="service-item">
+            <img src="https://images.unsplash.com/photo-1599067148286-d04f163c6a5b" alt="Balades à cheval">
+            <h3>Balades en pleine nature</h3>
+            <p>Découvrez la beauté de la Sologne à cheval lors de nos balades encadrées, adaptées aux débutants et cavaliers confirmés.</p>
+        </div>
+        <div class="service-item">
+            <img src="https://images.unsplash.com/photo-1559599236-02390e0027d3" alt="Soins aux chevaux">
+            <h3>Soins aux chevaux</h3>
+            <p>Apprenez à prendre soin de nos poneys et chevaux avec des ateliers sur les soins et le bien-être des équidés.</p>
+        </div>
+    </section>
+
+    <section class="regles">
+        <h2>Règles de fonctionnement</h2>
+        <ul>
+            <li>Les cours sont réservables à l’avance, en individuel ou en groupe (maximum 10 personnes).</li>
+            <li>Les poneys doivent avoir une heure de repos après deux heures de cours.</li>
+            <li>Un poney ne peut porter un cavalier que si celui-ci respecte une limite de poids définie pour chaque animal.</li>
+            <li>Les cotisations annuelles sont à régler en début d’année et chaque cours réservé est facturé individuellement.</li>
+        </ul>
+    </section>
+<?php $content = ob_get_clean(); ?>
+
+<?php require('Template/template.php') ?>
