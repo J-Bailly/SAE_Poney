@@ -16,7 +16,7 @@ $loader = new DataLoaderJson("Data/model.json");
 $form = $loader->getData();
 
 ?>
-<?php $title = "Le blog de l'AVBN"; ?>
+<?php $title = "KavalKenny Klub"; ?>
 
 <?php ob_start(); ?>
 	<section class="services">

@@ -11,8 +11,8 @@
 <body>
 <header>
         <nav class="navigation">
-            <a href="#">Accueil</a>
-            <a href="#">Planning</a>
+            <a href="index.php">Accueil</a>
+            <a href="planning.php">Planning</a>
             <a href="#">Nous Contacter</a>
         </nav>
         <div>
