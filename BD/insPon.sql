@@ -4,7 +4,7 @@
 
 -- Insérer un membre de test
 INSERT INTO MEMBRE (nom, prenom, email, poids, date_inscription, cotisation_valide) 
-VALUES ('Test', 'Membre', 'test.membre@example.com', 70.0, '2023-11-18', TRUE);
+VALUES ('Test', 'Membre', 'test.membre@example.com', 120.0, '2023-11-18', TRUE);
 
 -- Insérer un poney de test
 INSERT INTO PONEY (nom, age, poids, disponible, temps_repos, poids_max) 
