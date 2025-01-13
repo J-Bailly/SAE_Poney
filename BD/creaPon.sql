@@ -2,7 +2,7 @@
 
 -- Création de la table log_reserver
 CREATE TABLE log_reserver (
-    id_log INT AUTO_INCREMENT PRIMARY KEY,
+    id_log INT PRIMARY KEY AUTO_INCREMENT,
     message VARCHAR(255),
     date_heure TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
