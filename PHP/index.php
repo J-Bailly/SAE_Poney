@@ -14,12 +14,11 @@ use View\Template;
 
 $loader = new DataLoaderJson("Data/model.json");
 $form = $loader->getData();
-
 ?>
 <?php $title = "KavalKenny Klub"; ?>
 
 <?php ob_start(); ?>
-	<section class="services">
+    <section class="services">
         <h2>Nos services</h2>
         <div class="service-item">
             <h3>Cours d'équitation</h3>

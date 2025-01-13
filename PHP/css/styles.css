@@ -121,3 +121,24 @@ th {
 main {
     margin: 20px;
 }
+
+.tabPlanning {
+    border-collapse: collapse;
+    width: 100%;
+    text-align: center;
+}
+
+.tabPlanning td {
+    border: 1px solid black;
+    padding: 10px;
+}
+
+.tabPlanning .cellHour {
+    background-color: #f2f2f2;
+    width: 100px;
+}
+
+.tabPlanning .cellDay {
+    background-color: #d1e7ff;
+    font-weight: bold;
+}

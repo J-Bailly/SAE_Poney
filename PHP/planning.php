@@ -1,19 +1,51 @@
-<?php 
-class planning{
-    private $joursFr = Array(0=>"Lundi", 1=>"Mardi", 2=>"Mercredi", 3=>"Jeudi", 4=>"Vendredi", 5=>"Samedi");
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Planning</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <header>
+        <nav class="navigation">
+            <a href="index.php">Accueil</a>
+            <a href="planning.php">Planning</a>
+            <a href="#">Nous Contacter</a>
+        </nav>
+        <div>
+            <a href="Template/signup.php"><button class="sign-up-button">S'inscrire</button></a>
+            <a href="Template/login.php"><button class="sign-up-button">Se connecter</button></a>
+        </div>
+    </header>
+<?php
+class PlanningCellule {
+    public $numJour;
+    public $heureDebut;
+    public $heureFin;
+    public $contenu;
+    public $bgColor;
 
-    private $jourDebut; //jour de débutr du planning (0 à 5)
-    private $jourFin; //jour de fin du planning
+    public function __construct($numJour, $heureDebut, $heureFin, $contenu, $bgColor = "#FFFFFF") {
+        $this->numJour = $numJour;
+        $this->heureDebut = $heureDebut;
+        $this->heureFin = $heureFin;
+        $this->contenu = $contenu;
+        $this->bgColor = $bgColor;
+    }
+}
 
-    private $heureDebut; // heure de début de chaque jour (minute)
-    private $heureFin; // heure de fin de chaque jour (minute)
+class Planning {
+    private $joursFr = ["Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi"];
 
-    private $pas; //durée d'une case
+    private $jourDebut;
+    private $jourFin;
+    private $heureDebut;
+    private $heureFin;
+    private $pas;
     private $minuteKeys;
-
-    private $contenu; // contenu général du planning (tableau de PlanningCellue)
-
-    private $tabSemaine; // stockage des données (tableau initialisé avec des cellues vides)
+    private $contenu;
+    private $tabSemaine;
 
     const htmlSpace = "&nbsp;";
     const htmlEmptyCell = "<td>&nbsp;</td>";
@@ -23,55 +55,52 @@ class planning{
     const htmlRowClose = "</tr>";
     const htmlTableOpen = "<table class='tabPlanning'>";
     const htmlTableClose = "</table>";
-
     const separateurHeure = "h";
 
-    public finction __construct($jourDebut=0, $jourFin=6, $heureDebut=480, $heureFin=1140, $pas=60, $contenu = Array()){
+    public function __construct($jourDebut = 0, $jourFin = 5, $heureDebut = 480, $heureFin = 1140, $pas = 60, $contenu = Array()) {
         $this->jourDebut = $jourDebut;
         $this->jourFin = $jourFin;
         $this->heureDebut = $heureDebut;
         $this->heureFin = $heureFin;
         $this->pas = $pas;
-        $this->contenu = $contenu;
 
-        $this->initTableauSemaine($this->contenu);
-        // $this->debugPHPArrays();
-        $this->insererContenus($contenu);
+        // Exemple de contenu en dur (à remplacer par des données de base de données plus tard)
+        $this->contenu = [
+            new PlanningCellule(0, 540, 600, "Cours d'équitation", "#FFDDC1"),  // Lundi de 9h à 10h
+            new PlanningCellule(1, 600, 660, "Balade en forêt", "#C1FFD7"),      // Mardi de 10h à 11h
+            new PlanningCellule(2, 660, 720, "Soin des chevaux", "#C1E1FF"),    // Mercredi de 11h à 12h
+            new PlanningCellule(3, 780, 840, "Cours avancé", "#FFC1DD"),        // Jeudi de 13h à 14h
+            new PlanningCellule(4, 840, 900, "Atelier soin", "#FFE4C1"),        // Vendredi de 14h à 15h
+        ];
+
+        $this->initTableauSemaine();
+        $this->insererContenus($this->contenu);
     }
 
-        /**
-     * Génère un tableau dont les clés sont les heures de début de chaque case (en minutes)
-     * Serviront à identifier facilement chaque case du planning
-     * @return unknown_type
-     */
     private function genererMinutesKeys() {
         $keys = Array();
         for ($key = $this->heureDebut; $key < $this->heureFin; $key += $this->pas) {
             $keys[] = $key;
         }
-        $this->keys = $keys;
+        $this->minuteKeys = $keys;
         return $keys;
     }
 
-    /**
-     * Génère un tableau correspondant à un jour
-     * @return unknown_type
-     */
     private function initTableauJour() {
         if ($this->pas != 0) {
             $numCells = ($this->heureFin - $this->heureDebut) / $this->pas;
         } else {
-            echo 'pas == 0 !!';
+            echo 'Erreur: pas == 0 !!';
         }
         $keys = $this->genererMinutesKeys();
-        $tabJour = array_fill_keys($keys, self::htmlEmptyCell());
+        $tabJour = array_fill_keys($keys, self::htmlEmptyCell);
         return $tabJour;
     }
 
     private function initTableauSemaine() {
         $this->tabSemaine = Array();
         $tabJour = $this->initTableauJour();
-        for ($i = $this->jourDebut; $i < $this->jourFin; $i++) {
+        for ($i = $this->jourDebut; $i <= $this->jourFin; $i++) {
             $this->tabSemaine[$i] = $tabJour;
         }
     }
@@ -80,24 +109,13 @@ class planning{
         return ($minutesFin - $minutesDebut) / $this->pas;
     }
 
-        /**
-     * Insère tous les contenus de cellules envoyés
-     * @param $contenuPlanning
-     * @return unknown_type
-     */
     private function insererContenus($contenuPlanning) {
         foreach ($contenuPlanning as $contenuCellule) {
             $this->insererContenu($contenuCellule);
         }
     }
 
-    /**
-     * Insère le contenu d'une cellule précise
-     * @param $contenuCellule
-     * @return unknown_type
-     */
     private function insererContenu($contenuCellule) {
-        // ajout de la cellule fusionnée
         $duree = $this->getNumeroCellule($contenuCellule->heureDebut, $contenuCellule->heureFin);
         $contenu = $contenuCellule->contenu . '<br />';
         $contenu .= $this->convertirMinutesEnHeuresMinutes($contenuCellule->heureDebut);
@@ -106,7 +124,6 @@ class planning{
         $this->tabSemaine[$contenuCellule->numJour][$contenuCellule->heureDebut] = 
             $this->genererCelluleHTML($contenu, $duree, '', $contenuCellule->bgColor);
 
-        // suppression du contenu suivant
         $key = $contenuCellule->heureDebut;
         for ($cpt = $duree - 1; $cpt > 0; $cpt--) {
             $key += $this->pas;
@@ -114,58 +131,40 @@ class planning{
         }
     }
 
-    /* Affichage */
-    public function debugPHPArrays() {
-        echo '<pre>';
-        print_r($this->tabSemaine);
-        echo '</pre>';
-    }
-
     public function genererHtmlTable() {
-        $htmlTable = self::htmlTableOpen();
-
+        $htmlTable = self::htmlTableOpen;
         $htmlTable .= $this->genererBandeauJours();
-
         $key = $this->heureDebut;
         $keyEnd = $this->heureFin;
 
         for (; $key < $keyEnd; $key += $this->pas) {
-            $htmlTable .= self::htmlRowOpen();
+            $htmlTable .= self::htmlRowOpen;
             $htmlTable .= '<td class="cellHour">' . $this->convertirMinutesEnHeuresMinutes($key) . '</td>';
             foreach ($this->tabSemaine as $tabHeures) {
                 $htmlTable .= $tabHeures[$key];
             }
-            $htmlTable .= self::htmlRowClose();
+            $htmlTable .= self::htmlRowClose;
         }
 
-        $htmlTable .= self::htmlTableClose();
+        $htmlTable .= self::htmlTableClose;
         return $htmlTable;
     }
 
     public function afficherHtmlTable() {
-        echo $this->genererHtmlTable();
+        $html = $this->genererHtmlTable();
+        echo $html; // Affiche le HTML généré sans l'échapper
     }
 
     private function genererBandeauJours() {
-        $daysLine = self::htmlRowOpen();
+        $daysLine = self::htmlRowOpen;
         $daysLine .= $this->genererCelluleHTML(self::htmlSpace);
-        $day = $this->jourDebut;
-        while ($day <= $this->jourFin) {
+        for ($day = $this->jourDebut; $day <= $this->jourFin; $day++) {
             $daysLine .= $this->genererCelluleHTML($this->jourFr($day), '', 'cellDay');
-            $day++;
         }
-        $daysLine .= self::htmlRowClose();
+        $daysLine .= self::htmlRowClose;
         return $daysLine;
     }
 
-    /**
-     * Génère une ligne HTML contenant le libellé des jours utilisés dans le planning
-     * @param $contenuCellule
-     * @param $colspan
-     * @param $class
-     * @param $bgColor
-     * @return unknown_type
-     */
     private function genererCelluleHTML($contenuCellule, $colspan = '', $class = '', $bgColor = '') {
         $celluleHTML = '<td';
         if (!empty($colspan)) {
@@ -183,20 +182,21 @@ class planning{
         return $celluleHTML;
     }
 
-    /**
-     * Renvoie le libellé d'un jour en Français
-     * @param $dayNum
-     * @return unknown_type
-     */
     private function jourFr($dayNum) {
         return $this->joursFr[$dayNum];
     }
 
-    private function convertMinutesEnHeuresMinutes($minutes){
-        $heure = floor($minutes/60);
-        $minutes = ($minutes % 60);
+    private function convertirMinutesEnHeuresMinutes($minutes) {
+        $heure = floor($minutes / 60);
+        $minutes = $minutes % 60;
         $minutes = str_pad($minutes, 2, "0", STR_PAD_LEFT);
-        return ($heure, self::separateurJeire, $minutes);
+        return $heure . self::separateurHeure . $minutes;
     }
-
 }
+// Créer une instance de la classe Planning
+$planning = new Planning();
+$planning->afficherHtmlTable();
+?>
+
+</body>
+</html>

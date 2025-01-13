@@ -9,15 +9,15 @@
 </head>
 
 <body>
-<header>
+    <header>
         <nav class="navigation">
             <a href="index.php">Accueil</a>
             <a href="planning.php">Planning</a>
             <a href="#">Nous Contacter</a>
         </nav>
         <div>
-            <button class="sign-up-button">S'inscrire</button>
-            <button class="sign-up-button">Se connecter</button>
+            <a href="Template/signup.php"><button class="sign-up-button">S'inscrire</button></a>
+            <a href="Template/login.php"><button class="sign-up-button">Se connecter</button></a>
         </div>
     </header>
     <div class="design-entete">
