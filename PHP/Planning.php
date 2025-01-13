@@ -1,5 +1,5 @@
 <?php 
-class planning{
+class Planning{
     private $joursFr = Array(0=>"Lundi", 1=>"Mardi", 2=>"Mercredi", 3=>"Jeudi", 4=>"Vendredi", 5=>"Samedi");
 
     private $jourDebut; //jour de débutr du planning (0 à 5)
@@ -26,7 +26,7 @@ class planning{
 
     const separateurHeure = "h";
 
-    public finction __construct($jourDebut=0, $jourFin=6, $heureDebut=480, $heureFin=1140, $pas=60, $contenu = Array()){
+    public function __construct($jourDebut=0, $jourFin=6, $heureDebut=480, $heureFin=1140, $pas=60, $contenu = Array()){
         $this->jourDebut = $jourDebut;
         $this->jourFin = $jourFin;
         $this->heureDebut = $heureDebut;
@@ -64,7 +64,7 @@ class planning{
             echo 'pas == 0 !!';
         }
         $keys = $this->genererMinutesKeys();
-        $tabJour = array_fill_keys($keys, self::htmlEmptyCell());
+        $tabJour = array_fill_keys($keys, self::htmlEmptyCell);
         return $tabJour;
     }
 
@@ -87,7 +87,7 @@ class planning{
      */
     private function insererContenus($contenuPlanning) {
         foreach ($contenuPlanning as $contenuCellule) {
-            $this->insererContenu($contenuCellule);
+            $this->insererContenus($contenuCellule);
         }
     }
 
@@ -122,7 +122,7 @@ class planning{
     }
 
     public function genererHtmlTable() {
-        $htmlTable = self::htmlTableOpen();
+        $htmlTable = self::htmlTableOpen;
 
         $htmlTable .= $this->genererBandeauJours();
 
@@ -130,7 +130,7 @@ class planning{
         $keyEnd = $this->heureFin;
 
         for (; $key < $keyEnd; $key += $this->pas) {
-            $htmlTable .= self::htmlRowOpen();
+            $htmlTable .= self::htmlRowOpen;
             $htmlTable .= '<td class="cellHour">' . $this->convertirMinutesEnHeuresMinutes($key) . '</td>';
             foreach ($this->tabSemaine as $tabHeures) {
                 $htmlTable .= $tabHeures[$key];
@@ -147,14 +147,14 @@ class planning{
     }
 
     private function genererBandeauJours() {
-        $daysLine = self::htmlRowOpen();
+        $daysLine = self::htmlRowOpen;
         $daysLine .= $this->genererCelluleHTML(self::htmlSpace);
         $day = $this->jourDebut;
         while ($day <= $this->jourFin) {
             $daysLine .= $this->genererCelluleHTML($this->jourFr($day), '', 'cellDay');
             $day++;
         }
-        $daysLine .= self::htmlRowClose();
+        $daysLine .= self::htmlRowClose;
         return $daysLine;
     }
 
@@ -192,11 +192,11 @@ class planning{
         return $this->joursFr[$dayNum];
     }
 
-    private function convertMinutesEnHeuresMinutes($minutes){
+    private function convertirMinutesEnHeuresMinutes($minutes){
         $heure = floor($minutes/60);
         $minutes = ($minutes % 60);
         $minutes = str_pad($minutes, 2, "0", STR_PAD_LEFT);
-        return ($heure, self::separateurJeire, $minutes);
+        return $heure. self::separateurJeire .$minutes;
     }
 
 }
