@@ -1,0 +1,144 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #fcfaee;
+    color: #333;
+}
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #fcfaee;
+    padding: 20px;
+}
+.inverser {
+    transform: scaleX(-1);
+}
+.design-entete {
+    background-color: #A5B68D;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-inline: 20px;
+}
+
+.design-entete img {
+    width: 150px;
+    margin-right: 10px;
+}
+.logo {
+    display: flex;
+    align-items: center;    /* Centrer le texte et l'image verticalement */
+    justify-content: center; /* Centrer le logo horizontalement */
+}
+nav {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 2.4em;
+}
+nav a {
+    margin: 0 15px;
+    text-decoration: none;
+    color: #333;
+    font-weight: bold;
+    position: relative;
+}
+nav a:not(:last-child)::after {
+    content: "";
+    position: absolute;
+    margin-right: -22px;
+    top: 0;
+    right: 0;
+    width: 2px; /* largeur de la barre */
+    height: 100%;
+    background-color: #333; /* couleur de la barre */
+}
+nav a:hover {
+    text-decoration: underline;
+}
+.sign-up-button {
+    background-color: #f4a261;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    font-size: 2em;
+}
+.sign-up-button:hover {
+    background-color: #e76f51;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+.main {
+    padding: 20px;
+}
+.about {
+    background-color: #d7e3d4;
+    padding: 20px;
+    margin: 20px;
+    border-radius: 10px;
+}
+.about-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.about-content img {
+    width: 300px;
+    border-radius: 10px;
+}
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+table, th, td {
+    border: 1px solid #ccc;
+}
+th, td {
+    padding: 10px;
+    text-align: center;
+}
+th {
+    background-color: #d7e3d4;
+}
+.tarifs article {
+    margin-bottom: 20px;
+}
+.footer {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    text-align: center;
+    padding: 10px;
+    background-color: #A5B68D;
+    width: 100%;
+}
+
+main {
+    margin: 20px;
+}
+
+.tabPlanning {
+    border-collapse: collapse;
+    width: 100%;
+    text-align: center;
+}
+
+.tabPlanning td {
+    border: 1px solid black;
+    padding: 10px;
+}
+
+.tabPlanning .cellHour {
+    background-color: #f2f2f2;
+    width: 100px;
+}
+
+.tabPlanning .cellDay {
+    background-color: #d1e7ff;
+    font-weight: bold;
+}
