@@ -64,17 +64,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
         .calendar-grid {
             display: grid;
-            grid-template-columns: repeat(7, 1fr);
-            gap: 1px;
-            background-color: #d7e3d4;
+            grid-template-columns: repeat(7, 1fr); /* 7 colonnes pour les jours de la semaine */
+            gap: 1px; /* Petit espace entre les cases */
+            background-color: #d7e3d4; /* Couleur de fond de la grille */
         }
         .day {
+            aspect-ratio: 4 / 3; /* Rendre chaque case carrée */
             background-color: #d1e7ff;
-            padding: 20px;
-            text-align: center;
-            border: 1px solid #ccc;
+            padding: 0;
+            display: flex;
+            align-items: center; /* Centrer verticalement le contenu */
+            justify-content: center; /* Centrer horizontalement le contenu */
+            font-weight: bold;
+            border: 1px solid #ccc; /* Ajouter une bordure fine */
             cursor: pointer;
-            height: 100px;
+            transition: background-color 0.3s ease;
         }
         .day.inactive {
             background-color: #f2f2f2;
@@ -84,6 +88,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         .day a {
             color: inherit;
             text-decoration: none;
+        }
+        .day-header {
+            background-color: #a5b68d; /* Couleur différente pour la ligne des jours */
+            color: white;
+        }
+        .day, .day-header {
+            aspect-ratio: 4/3; /* Les cases sont carrées */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            border: 1px solid #ccc;
+            background-color: #d1e7ff;
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box; /* Inclut les bordures dans les dimensions */
         }
 
         /* Style pour la pop-up */
@@ -141,6 +161,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             font-size: 20px;
             color: #000;
         }
+
+        a.day-link {
+            display: block;
+            text-decoration: none;
+            color: inherit; /* Conserve la couleur de texte normale */
+        }
+
+        a.day-link .day {
+            height: 100%; /* Prend toute la hauteur disponible */
+            display: flex;
+            align-items: center;
+            justify-content: center; /* Centre le contenu */
+        }
+
+        a.day-link:hover .day {
+            background-color: #bcd4f6; /* Change la couleur au survol */
+            transition: background-color 0.3s ease;
+        }
+
     </style>
 </head>
 <body>
@@ -167,9 +206,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // Ajouter les jours du mois
             for ($jour = 1; $jour <= $jours_dans_mois; $jour++) {
                 $date = sprintf('%04d-%02d-%02d', $annee, $mois, $jour);
-                echo "<div class='day'>";
-                echo "<a href='#modal-$jour'>$jour</a>";
-                echo "</div>";
+                echo "<a href='#modal-$jour' class='day-link'>";
+                echo "<div class='day'>$jour</div>";
+                echo "</a>";
 
                 // Créer la pop-up pour chaque jour
                 echo "
@@ -202,5 +241,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             ?>
         </div>
     </div>
+    <script>
+    document.addEventListener('keydown', function (event) {
+        if (event.key === 'Escape') {
+            // Récupère toutes les modales ouvertes
+            const modals = document.querySelectorAll('.modal:target');
+            modals.forEach(function (modal) {
+                window.location.hash = ''; // Réinitialise l'ancre pour fermer la pop-up
+            });
+        }
+        });
+    </script>
+
 </body>
 </html>
