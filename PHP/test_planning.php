@@ -13,7 +13,7 @@ $options = [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION];
 // Vérification de la connexion de l'utilisateur
 if (!isset($_SESSION['utilisateur'])) {
     // Si l'utilisateur n'est pas connecté, rediriger vers la page de connexion
-    header('Location: connexion.php');
+    header('Location: Template/login.php');
     exit();
 }
 

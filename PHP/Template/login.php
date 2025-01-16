@@ -1,3 +1,4 @@
+<?php require("template.php") ?>
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -7,14 +8,6 @@
     <link rel="stylesheet" href="../css/styles.css">
 </head>
 <body>
-    <header>
-        <nav class="navigation">
-            <a href="../index.php">Accueil</a>
-            <a href="../Planning.php">Planning</a>
-            <a href="#">Nous Contacter</a>
-        </nav>
-    </header>
-
     <main>
         <h1>Connexion</h1>
         <form action="login_process.php" method="POST">
@@ -34,9 +27,5 @@
             </div>
         </form>
     </main>
-
-    <div class="footer">
-        <p>&copy; 2025 Poney Club Grand Galop | Tous droits réservés.</p>
-    </div>
 </body>
 </html>

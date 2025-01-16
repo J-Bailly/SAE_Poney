@@ -6,7 +6,7 @@
 <body>
 <div id="planning">
 <?php
-include('test_planning.php')
+require('test_planning.php')
 ?>
 </div>
 </body>

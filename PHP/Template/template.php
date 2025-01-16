@@ -21,13 +21,13 @@
         </div>
     </header>
     <div class="design-entete">
-        <img src="Template/Fleur.png" alt="fleur">
+        <img src="Fleur.png" alt="fleur">
         <div class="logo">
-            <img src="Template/logo_cheval.png" alt="KavalKenny Klub Logo">
+            <img src="logo_cheval.png" alt="KavalKenny Klub Logo">
             <h1>KavalKenny Klub</h1>
         </div>
         <div class="inverser">
-            <img src="Template/Fleur.png" alt="fleur">
+            <img src="Fleur.png" alt="fleur">
         </div>
     </div>
     <main class='content'>
