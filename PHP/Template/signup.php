@@ -35,7 +35,10 @@
                 <input type="password" id="confirm_password" name="confirm_password" required>
             </div>
             <div>
-                <button type="submit">S'inscrire</button>
+                <p>Vous avez déjà un compte chez nous ? <a href="login.php">Connectez Vous </a>!</p>
+            </div>
+            <div>
+                <button type="submit" href="../test_planning.php">S'inscrire</button>
             </div>
         </form>
     </main>

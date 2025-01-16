@@ -30,7 +30,7 @@
             <img src="Template/Fleur.png" alt="fleur">
         </div>
     </div>
-    <main>
+    <main class='content'>
         <?= $content ?>
     </main>
     <div class="footer">

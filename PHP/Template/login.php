@@ -27,7 +27,10 @@
                 <input type="password" id="password" name="password" required>
             </div>
             <div>
-                <button type="submit">Se connecter</button>
+                <p>Vous n'avez pas encore de compte chez nous ? <a href="signup.php">Inscrivez Vous</a>!</p>
+            </div>
+            <div>
+                <button type="submit" href="../test_planning.php">Se connecter</button>
             </div>
         </form>
     </main>
