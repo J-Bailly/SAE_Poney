@@ -11,11 +11,11 @@ $options = [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION];
 
 
 // Vérification de la connexion de l'utilisateur
-if (!isset($_SESSION['utilisateur'])) {
+//if (!isset($_SESSION['utilisateur'])) {
     // Si l'utilisateur n'est pas connecté, rediriger vers la page de connexion
-    header('Location: Template/login.php');
-    exit();
-}
+//    header('Location: Template/login.php');
+//    exit();
+//}
 
 // Récupérer le mois et l'année
 $mois = isset($_GET['mois']) ? (int)$_GET['mois'] : date('n');
@@ -28,8 +28,8 @@ $jours_semaines = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 $date_selectionnee = isset($_GET['date']) ? $_GET['date'] : null;
 
 // Récupérer la liste des poneys
-$stmt = $pdo->query('SELECT id, nom FROM poneys');
-$liste_poneys = $stmt->fetchAll(PDO::FETCH_ASSOC);
+//$stmt = $pdo->query('SELECT id, nom FROM poneys');
+//$liste_poneys = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 // Gestion de la soumission du formulaire
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -82,9 +82,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 echo "</a>";
 
                 // Récupérer les cours disponibles pour ce jour
-                $stmt = $pdo->prepare('SELECT * FROM cours WHERE date = ?');
-                $stmt->execute([$date]);
-                $cours = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                //$stmt = $pdo->prepare('SELECT * FROM cours WHERE date = ?');
+                //$stmt->execute([$date]);
+                //$cours = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
                 // Créer la pop-up pour chaque jour
                 echo "
@@ -117,6 +117,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </div>
                 ";
             }
+
 
             // Ajouter des cases vides après la fin du mois pour compléter la grille
             $cases_restantes = (7 - ($jours_dans_mois + $premier_jour_mois) % 7) % 7;
