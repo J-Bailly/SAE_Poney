@@ -46,12 +46,13 @@ class Database {
             poids_max DECIMAL(5, 2) NOT NULL
         );
     
-        -- Création de la table MEMBRE avec contrainte UNIQUE sur email
+        -- Création de la table MEMBRE avec ajout du mot de passe
         CREATE TABLE IF NOT EXISTS MEMBRE (
             id_membre INTEGER PRIMARY KEY AUTOINCREMENT,
             nom VARCHAR(50) NOT NULL,
             prenom VARCHAR(50) NOT NULL,
             email VARCHAR(100) NOT NULL UNIQUE,  -- Contrainte UNIQUE sur email
+            password VARCHAR(255) NOT NULL,      -- Mot de passe hashé
             poids DECIMAL(5, 2) NOT NULL,
             date_inscription DATE NOT NULL,
             cotisation_valide BOOLEAN DEFAULT FALSE
@@ -125,9 +126,12 @@ class Database {
         }
     }    
 
-    public function inscrireMembre($nom, $prenom, $email, $poids, $dateInscription) {
-        $sql = "INSERT INTO MEMBRE (nom, prenom, email, poids, date_inscription, cotisation_valide)
-                VALUES (:nom, :prenom, :email, :poids, :dateInscription, FALSE)";  // Cotisation non valide par défaut
+    public function inscrireMembre($nom, $prenom, $email, $password, $poids, $dateInscription) {
+        // Hash du mot de passe avant de l'enregistrer
+        $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+        
+        $sql = "INSERT INTO MEMBRE (nom, prenom, email, password, poids, date_inscription, cotisation_valide)
+                VALUES (:nom, :prenom, :email, :password, :poids, :dateInscription, FALSE)";  // Cotisation non valide par défaut
     
         try {
             $stmt = $this->pdo->prepare($sql);
@@ -135,15 +139,21 @@ class Database {
                 ':nom' => $nom,
                 ':prenom' => $prenom,
                 ':email' => $email,
+                ':password' => $hashedPassword,
                 ':poids' => $poids,
                 ':dateInscription' => $dateInscription
             ]);
             return $this->pdo->lastInsertId();  // Renvoie l'ID du membre inscrit
         } catch (PDOException $e) {
-            echo 'Erreur lors de l\'inscription : ' . $e->getMessage();
+            if ($e->getCode() == '23505') {  // Code d'erreur pour violation de contrainte UNIQUE
+                echo 'Erreur : Cet email est déjà utilisé.';
+            } else {
+                echo 'Erreur lors de l\'inscription : ' . $e->getMessage();
+            }
             return false;
         }
     }
+    
     
     public function inscrireCours($idMembre, $idPoney, $idCours) {
         // Vérifier si la cotisation est valide pour le membre

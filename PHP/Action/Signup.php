@@ -8,6 +8,7 @@
 </head>
 <body>
 <?php require('../Template/header.php');?>
+
 <?php
 require_once '../Classes/Form/Database.php';
 
@@ -17,13 +18,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $prenom = $_POST['prenom'];
     $email = $_POST['email'];
     $poids = $_POST['poids'];
+    $motDePasse = $_POST['password']; // Récupérer le mot de passe
     $dateInscription = date('Y-m-d');  // Utilisation de la date actuelle
 
     // Initialiser la connexion à la base de données
     $db = new \Classes\Form\Database('../../BD/BD.sqlite');
 
     // Appel de la méthode inscrireMembre pour enregistrer le membre
-    $resultat = $db->inscrireMembre($nom, $prenom, $email, $poids, $dateInscription);
+    $resultat = $db->inscrireMembre($nom, $prenom, $email, $motDePasse, $poids, $dateInscription);
 
     // Message de confirmation ou d'erreur
     if ($resultat) {
@@ -48,6 +50,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     <label for="poids">Poids (en kg) :</label>
     <input type="number" id="poids" name="poids" step="0.01" required><br><br>
+
+    <!-- Nouveau champ pour le mot de passe -->
+    <label for="password">Mot de passe :</label>
+    <input type="password" id="password" name="password" required><br><br>
 
     <input type="submit" value="S'inscrire">
 </form>

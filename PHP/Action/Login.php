@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="../../css/styles.css">
 </head>
 <body>
-<?php require('../Template/header.php');?>
+<?php require('../Template/header.php'); ?>
     <main>
         <h1>Connexion</h1>
         <form action="login_process.php" method="POST">
