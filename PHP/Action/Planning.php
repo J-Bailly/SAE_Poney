@@ -1,231 +1,170 @@
+<?php require('../Template/header.php');?>
+
+<?php
+session_start(); // Démarrer la session pour gérer la connexion des utilisateurs
+
+// Connexion à la base de données
+$dsn = 'mysql:host=localhost;dbname=equitaction;charset=utf8';
+$username = 'root';
+$password = '';
+$options = [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION];
+
+
+// Vérification de la connexion de l'utilisateur
+//if (!isset($_SESSION['utilisateur'])) {
+    // Si l'utilisateur n'est pas connecté, rediriger vers la page de connexion
+//    header('Location: Template/login.php');
+//    exit();
+//}
+
+// Récupérer le mois et l'année
+$mois = isset($_GET['mois']) ? (int)$_GET['mois'] : date('n');
+$annee = isset($_GET['annee']) ? (int)$_GET['annee'] : date('Y');
+$jours_dans_mois = cal_days_in_month(CAL_GREGORIAN, $mois, $annee);
+$premier_jour_mois = date('w', strtotime("$annee-$mois-01")); // 0 = Dimanche, 6 = Samedi
+$jours_semaines = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+
+// Récupérer la date sélectionnée
+$date_selectionnee = isset($_GET['date']) ? $_GET['date'] : null;
+
+// Récupérer la liste des poneys
+//$stmt = $pdo->query('SELECT id, nom FROM poneys');
+//$liste_poneys = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+// Gestion de la soumission du formulaire
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $date = $_POST['date'];
+    $poney_id = $_POST['poney'];
+    $nom_utilisateur = htmlspecialchars($_SESSION['utilisateur']); // Utilisateur connecté
+
+    // Enregistrer la réservation dans la base
+    $stmt = $pdo->prepare('INSERT INTO reservations (date, poney_id, nom_utilisateur) VALUES (?, ?, ?)');
+    $stmt->execute([$date, $poney_id, $nom_utilisateur]);
+
+    echo "<p>Réservation effectuée pour le $date avec le poney ID $poney_id.</p>";
+}
+?>
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Planning</title>
-    <link rel="stylesheet" href="../../css/styles.css">
+    <title>Planning Cours</title>
+    <link rel="stylesheet" href="../../css/planning.css" />
+    <link rel="stylesheet" href="../../css/styles.css" />
 </head>
-<?php require('../Template/header.php');?>
-<?php
-class PlanningCellule {
-    public $numJour;
-    public $heureDebut;
-    public $heureFin;
-    public $contenu;
-    public $bgColor;
-
-    public function __construct($numJour, $heureDebut, $heureFin, $contenu, $bgColor = "#FFFFFF") {
-        $this->numJour = $numJour;
-        $this->heureDebut = $heureDebut;
-        $this->heureFin = $heureFin;
-        $this->contenu = $contenu;
-        $this->bgColor = $bgColor;
-    }
-}
-
-class Planning {
-    private $joursFr = ["Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi"];
-
-    private $jourDebut;
-    private $jourFin;
-    private $heureDebut;
-    private $heureFin;
-    private $pas;
-    private $minuteKeys;
-    private $contenu;
-    private $tabSemaine;
-    private $datesSemaine = []; // Tableau pour stocker les dates de la semaine
-
-    const htmlSpace = "&nbsp;";
-    const htmlEmptyCell = "<td>&nbsp;</td>";
-    const htmlCellOpen = "<td>";
-    const htmlCellClose = "</td>";
-    const htmlRowOpen = "<tr>";
-    const htmlRowClose = "</tr>";
-    const htmlTableOpen = "<table class='tabPlanning'>";
-    const htmlTableClose = "</table>";
-    const separateurHeure = "h";
-
-    public function __construct($jourDebut = 0, $jourFin = 5, $heureDebut = 480, $heureFin = 1140, $pas = 60, $contenu = Array(), $startDate) {
-        $this->jourDebut = $jourDebut;
-        $this->jourFin = $jourFin;
-        $this->heureDebut = $heureDebut;
-        $this->heureFin = $heureFin;
-        $this->pas = $pas;
-
-        $startDate = $startDate ?? date('Y-m-d'); // Si pas de date donnée, prendre aujourd'hui
-        $this->calculerDatesSemaine($startDate);
-
-        // Exemple de contenu en dur (à remplacer par des données de base de données plus tard)
-        $this->contenu = [
-            new PlanningCellule(0, 540, 600, "Cours d'équitation", "#FFDDC1"),  // Lundi de 9h à 10h
-            new PlanningCellule(1, 600, 660, "Balade en forêt", "#C1FFD7"),      // Mardi de 10h à 11h
-            new PlanningCellule(2, 660, 720, "Soin des chevaux", "#C1E1FF"),    // Mercredi de 11h à 12h
-            new PlanningCellule(3, 780, 840, "Cours avancé", "#FFC1DD"),        // Jeudi de 13h à 14h
-            new PlanningCellule(4, 840, 900, "Atelier soin", "#FFE4C1"),         // Vendredi de 14h à 15h
-            new PlanningCellule(1, 1050, 1140, 'Dressage', '#008000'),          // Mardi de 17h30 à 19h
-            new PlanningCellule(0, 630, 720, 'Obstacle', '#7CCAF4'),            // Lundi de 10h30 à 12h
-            new PlanningCellule(2, 750, 840, 'Pony Games', '#7CCAF4'),          // Mercredi de 12h30 à 14h
-            new PlanningCellule(3, 870, 960, 'Randonnée', '#7CCAF4'),           // Jeudi de 14h30 à 16h
-            new PlanningCellule(5, 660, 750, 'Voltige', '#318CE7'),             // Samedi de 11h à 12h30
-            new PlanningCellule(4, 780, 870, 'Dressage', '#318CE7'),            // Vendredi de 13h à 14h30
-            new PlanningCellule(3, 900, 990, 'Obstacle', '#008000'),            // Jeudi de 15h à 16h30
-            new PlanningCellule(2, 1020, 1110, 'Pony Games', '#008000'),        // Mercredi de 17h à 18h30
-            new PlanningCellule(0, 1140, 1230, 'Randonnée', '#008000'),         // Lundi de 19h à 20h30
-            new PlanningCellule(4, 1260, 1350, 'Voltige', '#008000'),           // Vendredi de 21h à 22h30
-            new PlanningCellule(3, 690, 780, 'Obstacle', '#7CCAF4'),            // Jeudi de 11h30 à 13h
-            new PlanningCellule(1, 810, 900, 'Pony Games', '#008000'),          // Mardi de 13h30 à 15h
-            new PlanningCellule(5, 930, 1020, 'Dressage', '#318CE7'),           // Samedi de 15h30 à 17h
-            new PlanningCellule(4, 1050, 1140, 'Randonnée', '#008000'),         // Vendredi de 17h30 à 19h
-            new PlanningCellule(4, 1170, 1260, 'Obstacle', '#318CE7'),          // Vendredi de 19h30 à 21h
-            new PlanningCellule(2, 750, 840, 'Voltige', '#318CE7'),             // Mercredi de 12h30 à 14h
-            new PlanningCellule(5, 870, 960, 'Obstacle', '#008000')             // Samedi de 14h30 à 16h
-
-           // Dimanche de 17h à 18h30
-
-
-        ];
-
-        $this->initTableauSemaine();
-        $this->insererContenus($this->contenu);
+<body>
+    <div class="calendar">
+        <div class="calendar-header">
+            <h1><?php echo date('F Y', strtotime("$annee-$mois-01")); ?></h1>
+            <div>
+            <a href="?mois=<?php 
+    if (($mois - 1) <= 0) {
+        $prev_mois = 12; 
+        $prev_annee = $annee - 1; 
+    } else {
+        $prev_mois = $mois - 1; 
+        $prev_annee = $annee; 
     }
 
-    private function genererMinutesKeys() {
-        $keys = Array();
-        for ($key = $this->heureDebut; $key < $this->heureFin; $key += $this->pas) {
-            $keys[] = $key;
-        }
-        $this->minuteKeys = $keys;
-        return $keys;
+    // Bloquer la navigation en arrière si on atteint janvier 2025
+    if ($prev_annee < 2025 || ($prev_annee == 2025 && $prev_mois < 1)) {
+        $prev_mois = 1; 
+        $prev_annee = 2025;
     }
 
-    private function initTableauJour() {
-        if ($this->pas != 0) {
-            $numCells = ($this->heureFin - $this->heureDebut) / $this->pas;
-        } else {
-            echo 'Erreur: pas == 0 !!';
-        }
-        $keys = $this->genererMinutesKeys();
-        $tabJour = array_fill_keys($keys, self::htmlEmptyCell);
-        return $tabJour;
+    echo $prev_mois; 
+?>&annee=<?php echo $prev_annee; ?>" style="color: white;">&lt; Mois Précédent</a> |
+
+<a href="?mois=<?php 
+    if (($mois + 1) >= 13) {
+        $next_mois = 1; 
+        $next_annee = $annee + 1; 
+    } else {
+        $next_mois = $mois + 1; 
+        $next_annee = $annee; 
     }
-
-    private function initTableauSemaine() {
-        $this->tabSemaine = Array();
-        $tabJour = $this->initTableauJour();
-        for ($i = $this->jourDebut; $i <= $this->jourFin; $i++) {
-            $this->tabSemaine[$i] = $tabJour;
-        }
-    }
-
-    private function getNumeroCellule($minutesDebut, $minutesFin) {
-        return ($minutesFin - $minutesDebut) / $this->pas;
-    }
-
-    private function insererContenus($contenuPlanning) {
-        foreach ($contenuPlanning as $contenuCellule) {
-            $this->insererContenu($contenuCellule);
-        }
-    }
-
-    private function insererContenu($contenuCellule) {
-        $duree = $this->getNumeroCellule($contenuCellule->heureDebut, $contenuCellule->heureFin);
-        $contenu = $contenuCellule->contenu . '<br />';
-        $contenu .= $this->convertirMinutesEnHeuresMinutes($contenuCellule->heureDebut);
-        $contenu .= ' - ' . $this->convertirMinutesEnHeuresMinutes($contenuCellule->heureFin);
-
-        $this->tabSemaine[$contenuCellule->numJour][$contenuCellule->heureDebut] = 
-            $this->genererCelluleHTML($contenu, $duree, '', $contenuCellule->bgColor);
-
-        $key = $contenuCellule->heureDebut;
-        for ($cpt = $duree - 1; $cpt > 0; $cpt--) {
-            $key += $this->pas;
-            $this->tabSemaine[$contenuCellule->numJour][$key] = '';
-        }
-    }
-
-    public function genererHtmlTable() {
-        $htmlTable = self::htmlTableOpen;
-        $htmlTable .= $this->genererBandeauJours();
-        $key = $this->heureDebut;
-        $keyEnd = $this->heureFin;
-
-        for (; $key < $keyEnd; $key += $this->pas) {
-            $htmlTable .= self::htmlRowOpen;
-            $htmlTable .= '<td class="cellHour">' . $this->convertirMinutesEnHeuresMinutes($key) . '</td>';
-            foreach ($this->tabSemaine as $tabHeures) {
-                $htmlTable .= $tabHeures[$key];
+    echo $next_mois; 
+?>&annee=<?php echo $next_annee; ?>" style="color: white;">Mois Suivant &gt;</a>
+            </div>
+        </div>
+        <div class="calendar-grid">
+            <?php
+            // Afficher les noms des jours
+            foreach ($jours_semaines as $jour) {
+                echo "<div class='day'><strong>$jour</strong></div>";
             }
-            $htmlTable .= self::htmlRowClose;
+
+            // Ajouter les jours vides avant le 1er du mois
+            for ($i = 0; $i < $premier_jour_mois; $i++) {
+                echo "<div class='day inactive'></div>";
+            }
+
+            // Ajouter les jours du mois
+            for ($jour = 1; $jour <= $jours_dans_mois; $jour++) {
+                $date = sprintf('%04d-%02d-%02d', $annee, $mois, $jour);
+                echo "<a href='#modal-$jour' class='day-link'>";
+                echo "<div class='day'>$jour</div>";
+                echo "</a>";
+
+                // Récupérer les cours disponibles pour ce jour
+                //$stmt = $pdo->prepare('SELECT * FROM cours WHERE date = ?');
+                //$stmt->execute([$date]);
+                //$cours = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+                // Créer la pop-up pour chaque jour
+                echo "
+                <div id='modal-$jour' class='modal'>
+                    <div class='modal-content'>
+                        <a href='#' class='close'>&times;</a>
+                        <h2>Réserver pour le $date</h2>
+                        
+                        <h3>Liste des cours disponibles :</h3>
+                        <ul>
+                ";
+                foreach ($cours as $cours_dispo) {
+                    echo "<li>{$cours_dispo['titre']} ({$cours_dispo['heure_debut']} - {$cours_dispo['heure_fin']})</li>";
+                }
+                echo "</ul>";
+
+                echo "
+                        <form method='POST' action=''>
+                            <input type='hidden' name='date' value='$date'>
+                            <select name='poney' required>
+                ";
+                foreach ($liste_poneys as $poney) {
+                    echo "<option value='{$poney['id']}'>{$poney['nom']}</option>";
+                }
+                echo "
+                            </select>
+                            <button type='submit'>Réserver</button>
+                        </form>
+                    </div>
+                </div>
+                ";
+            }
+
+
+            // Ajouter des cases vides après la fin du mois pour compléter la grille
+            $cases_restantes = (7 - ($jours_dans_mois + $premier_jour_mois) % 7) % 7;
+            for ($i = 0; $i < $cases_restantes; $i++) {
+                echo "<div class='day inactive'></div>";
+            }
+            ?>
+        </div>
+    </div>
+    <script>
+    document.addEventListener('keydown', function (event) {
+        if (event.key === 'Escape') {
+            // Récupère toutes les modales ouvertes
+            const modals = document.querySelectorAll('.modal:target');
+            modals.forEach(function (modal) {
+                window.location.hash = ''; // Réinitialise l'ancre pour fermer la pop-up
+            });
         }
-
-        $htmlTable .= self::htmlTableClose;
-        return $htmlTable;
-    }
-
-    public function afficherHtmlTable() {
-        $html = $this->genererHtmlTable();
-        echo $html; // Affiche le HTML généré sans l'échapper
-    }
-
-    private function genererBandeauJours() {
-        $daysLine = self::htmlRowOpen;
-        $daysLine .= $this->genererCelluleHTML(self::htmlSpace);
-        for ($day = $this->jourDebut; $day <= $this->jourFin; $day++) {
-            $dayLabel = $this->jourFr($day) . '<br>' . $this->datesSemaine[$day];
-            $daysLine .= $this->genererCelluleHTML($dayLabel, '', 'cellDay');
-        }
-        $daysLine .= self::htmlRowClose;
-        return $daysLine;
-    }
-    
-
-    private function genererCelluleHTML($contenuCellule, $colspan = '', $class = '', $bgColor = '') {
-        $celluleHTML = '<td';
-        if (!empty($colspan)) {
-            $celluleHTML .= ' rowspan="' . $colspan . '"';
-        }
-        if (!empty($class)) {
-            $celluleHTML .= ' class="' . $class . '"';
-        }
-        if (!empty($bgColor)) {
-            $celluleHTML .= ' bgcolor="' . $bgColor . '"';
-        }
-        $celluleHTML .= '>';
-        $celluleHTML .= $contenuCellule;
-        $celluleHTML .= '</td>';
-        return $celluleHTML;
-    }
-
-    private function jourFr($dayNum) {
-        return $this->joursFr[$dayNum];
-    }
-
-    private function convertirMinutesEnHeuresMinutes($minutes) {
-        $heure = floor($minutes / 60);
-        $minutes = $minutes % 60;
-        $minutes = str_pad($minutes, 2, "0", STR_PAD_LEFT);
-        return $heure . self::separateurHeure . $minutes;
-    }
-
-    private function calculerDatesSemaine($startDate) {
-    $date = new DateTime($startDate);
-    $date->modify('last Monday'); // Aller au lundi de la semaine
-    for ($i = 0; $i <= $this->jourFin - $this->jourDebut; $i++) {
-        $this->datesSemaine[] = $date->format('d-m-Y'); // Ajouter la date au format YYYY-MM-DD
-        $date->modify('+1 day'); // Passer au jour suivant
-        }
-    }
-
-    private function changerSemaine($startDate) {
-
-    }
-}
-$startDate = isset($_GET['start_date']) ? $_GET['start_date'] : date('Y-m-d');
-$planning = new Planning(0, 5, 480, 1140, 60, $contenusCellules, $startDate);
-$planning->afficherHtmlTable();
-?>
-
+    });
+    </script>
 </body>
 </html>
+
