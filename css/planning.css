@@ -1,143 +1,25 @@
-body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    background-color: #f9f7f1;
+/* PLANNING */
+#planning {
+    padding-left: 0;
+    margin: 210px;
+    overflow: auto;
 }
 
-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px 20px;
-    background-color: #d4dbc3;
-    border-bottom: 2px solid #c2c2b8;
+#planning table, #planning tr, #planning td {
+    text-align: center;
+    border-width: 1px;
+    border-style: solid;
+    border-color: black;
 }
 
-header nav a {
-    text-decoration: none;
-    color: #333;
-    margin: 0 15px;
+td.cellDay {
+    width: 120px;
     font-weight: bold;
 }
 
-header nav a:hover {
-    text-decoration: underline;
-}
-
-.logo {
-    display: flex;
-    align-items: center;
-}
-
-.logo img {
-    height: 50px;
-    margin-right: 10px;
-}
-
-.sign-up-button {
-    background-color: #ff7d59;
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
-}
-
-.sign-up-button:hover {
-    background-color: #e66d4f;
-}
-
-.main {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    padding: 40px 20px;
-    gap: 20px;
-}
-
-.main .socials,
-.main .membership {
-    background: white;
-    border-radius: 8px;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-    padding: 20px;
-    flex: 1;
-    border: 1px solid #ddd;
-}
-
-.socials h2,
-.membership h2 {
-    margin-bottom: 15px;
-    font-size: 20px;
-    color: #333;
-}
-
-.socials ul {
-    list-style: none;
-    padding: 0;
-}
-
-.socials li {
-    display: flex;
-    align-items: center;
-    margin-bottom: 15px;
-    font-size: 16px;
-    color: #555;
-}
-
-.socials li img {
+td.cellHour {
+    width: 70px;
+    vertical-align: top;
     height: 30px;
-    width: 30px;
-    margin-right: 10px;
-}
-
-.heure{
-    background-color: #ff7d59;
-}
-
-.membership p {
-    line-height: 1.8;
-    color: #555;
-    margin-bottom: 15px;
-}
-
-footer {
-    text-align: center;
-    padding: 15px;
-    background-color: #d4dbc3;
-    border-top: 2px solid #c2c2b8;
-    font-size: 14px;
-    color: #555;
-}
-
-table {
-    border-collapse: collapse;
-    border: 2px solid rgb(140 140 140);
-    font-family: sans-serif;
-    font-size: 0.8rem;
-    letter-spacing: 1px;
-}
-  
-caption {
-    caption-side: bottom;
-    padding: 10px;
     font-weight: bold;
-}
-
-th {
-    border: 1px solid rgb(160 160 160);
-    padding: 8px 10px;
-    background-color: #d4dbc3;
-}
-
-td {
-    border: 1px solid rgb(160 160 160);
-    padding: 8px 10px;
-    background-color: #e0e0e0;
-}
-  
-td:last-of-type {
-    text-align: center;
 }

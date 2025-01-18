@@ -1,1 +1,0 @@
-<h1>Vous avez répondu aux questions.</h1>

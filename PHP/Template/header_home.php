@@ -11,23 +11,23 @@
 <body>
     <header>
         <nav class="navigation">
-            <a href="index.php">Accueil</a>
-            <a href="test.php">Planning</a>
-            <a href="#">Nous Contacter</a>
+            <a href="#">Accueil</a>
+            <a href="PHP/Action/Planning.php">Planning</a>
+            <a href="PHP/Action/NousContacter.php">Nous Contacter</a>
         </nav>
         <div>
-            <a href="Template/signup.php"><button class="sign-up-button">S'inscrire</button></a>
-            <a href="Template/login.php"><button class="sign-up-button">Se connecter</button></a>
+            <a href="PHP/Action/Signup.php"><button class="sign-up-button">S'inscrire</button></a>
+            <a href="PHP/Action/Login.php"><button class="sign-up-button">Se connecter</button></a>
         </div>
     </header>
     <div class="design-entete">
-        <img src="Template/Fleur.png" alt="fleur">
+        <img src="PHP/img/Fleur.png" alt="fleur">
         <div class="logo">
-            <img src="Template/logo_cheval.png" alt="KavalKenny Klub Logo">
+            <img src="PHP/img/logo_cheval.png" alt="KavalKenny Klub Logo">
             <h1>KavalKenny Klub</h1>
         </div>
         <div class="inverser">
-            <img src="Template/Fleur.png" alt="fleur">
+            <img src="PHP/img//Fleur.png" alt="fleur">
         </div>
     </div>
     <main>

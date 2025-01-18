@@ -1,22 +1,12 @@
-<?php
-declare(strict_types=1);
-require 'Classes/Autoloader.php';
-
-Autoloader::register();
-
-use tools\type\Text;
-use tools\type\Hidden;
-use tools\type\Textarea;
-use tools\type\Checkbox;
-use tools\type\Label;
-use Provider\DataLoaderJson;
-use View\Template;
-
-$loader = new DataLoaderJson("Data/model.json");
-$form = $loader->getData();
-?>
-<?php $title = "KavalKenny Klub"; ?>
-
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Accueil - KavalKennyKlub</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
 <?php ob_start(); ?>
     <section class="services">
         <h2>Nos services</h2>
@@ -45,6 +35,9 @@ $form = $loader->getData();
             <li>Les cotisations annuelles sont à régler en début d’année et chaque cours réservé est facturé individuellement.</li>
         </ul>
     </section>
-<?php $content = ob_get_clean(); ?>
-
-<?php require('Template/template.php') ?>
+<?php 
+$content = ob_get_clean(); 
+require('PHP/Template/header_home.php');
+?>
+</body>
+</html>
