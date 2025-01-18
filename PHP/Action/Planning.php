@@ -11,11 +11,11 @@ $options = [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION];
 
 
 // Vérification de la connexion de l'utilisateur
-//if (!isset($_SESSION['utilisateur'])) {
+if (!isset($_SESSION['utilisateur'])) {
     // Si l'utilisateur n'est pas connecté, rediriger vers la page de connexion
-//    header('Location: Template/login.php');
-//    exit();
-//}
+    header('Location: Login.php');
+    exit();
+}
 
 // Récupérer le mois et l'année
 $mois = isset($_GET['mois']) ? (int)$_GET['mois'] : date('n');
@@ -109,9 +109,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 echo "</a>";
 
                 // Récupérer les cours disponibles pour ce jour
-                //$stmt = $pdo->prepare('SELECT * FROM cours WHERE date = ?');
-                //$stmt->execute([$date]);
-                //$cours = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                $stmt = $pdo->prepare('SELECT * FROM cours WHERE date = ?');
+                $stmt->execute([$date]);
+                $cours = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
                 // Créer la pop-up pour chaque jour
                 echo "

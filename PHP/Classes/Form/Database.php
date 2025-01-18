@@ -259,6 +259,28 @@ class Database {
             echo 'Erreur lors de la récupération des cours : ' . $e->getMessage();
             return false;
         }
-    }    
+    }
+
+    public function ajoutCours($date, $heureDebut, $duree, $placeMax, $coursCollectif, $categorie, $prix){
+        $sql = "INSERT INTO COURS (date, heure_debut, duree, place_max, cours_collectif,categorie, prix) 
+                VALUES (:date, :heure_debut, :duree, :place_max, :cours_collectif, :categorie, :prix)";
+    
+        try {
+            $stmt = $this->pdo->prepare($sql);
+            $stmt->execute([
+                ':date' => $date,
+                ':heure_debut' => $heureDebut,
+                ':duree' => $duree,
+                ':place_max' => $placeMax,
+                ':cours_collectif' => $coursCollectif,
+                ':categorie' => $categorie,
+                ':prix' => $prix
+            ]);
+            return true;
+        } catch (PDOException $e) {
+            echo 'Erreur lors de l\'inscription du moniteur au cours : ' . $e->getMessage();
+            return false;
+        } 
+    }
 }
 ?>
