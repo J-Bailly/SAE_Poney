@@ -141,3 +141,64 @@ a.day-link:hover .day {
     background-color: #bcd4f6; /* Change la couleur au survol */
     transition: background-color 0.3s ease;
 }
+
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 10px;
+}
+
+.day {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    border: 1px solid #ccc;
+    padding: 10px;
+    background-color: #f9f9f9;
+    border-radius: 5px;
+    min-height: 80px;
+    position: relative;
+}
+
+.inactive {
+    background-color: #eaeaea;
+}
+
+.course-count {
+    margin-top: 8px;
+    font-size: 0.9rem;
+    color: #007BFF;
+}
+
+.day-link {
+    text-decoration: none;
+    color: inherit;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1000;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    width: 80%;
+    max-width: 500px;
+}
+
+.modal:target {
+    display: block;
+}
+
+.close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    text-decoration: none;
+    font-size: 20px;
+}

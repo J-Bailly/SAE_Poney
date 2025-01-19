@@ -1,53 +1,44 @@
 <?php
-session_start(); // Démarrage de la session
-
-// Connexion à la base de données
-$dsn = 'mysql:host=localhost;dbname=equitaction;charset=utf8';
-$username = 'root';
-$password = '';
-$options = [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION];
+session_start();
 
 try {
-    $pdo = new PDO($dsn, $username, $password, $options);
+    $pdo = new PDO('sqlite:' . __DIR__ . '/../../BD/BD.sqlite');
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 } catch (PDOException $e) {
     die('Erreur de connexion à la base de données : ' . $e->getMessage());
 }
 
-// Vérification si le formulaire a été soumis
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $email = filter_var($_POST['email'], FILTER_SANITIZE_EMAIL);
     $password = $_POST['password'];
 
-    // Vérification des champs
     if (empty($email) || empty($password)) {
         $_SESSION['error'] = 'Veuillez remplir tous les champs.';
-        header('Location: login.php');
+        header('Location: Login.php');
         exit();
     }
 
-    // Requête pour récupérer l'utilisateur
-    $stmt = $pdo->prepare('SELECT id, email, password FROM membre WHERE email = ?');
+    // Vérifier si l'utilisateur existe
+    $stmt = $pdo->prepare('SELECT id_membre, email, password FROM MEMBRE WHERE email = ?');
     $stmt->execute([$email]);
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
     if ($user) {
-        // Vérification du mot de passe
         if (password_verify($password, $user['password'])) {
-            // Stocker les informations utilisateur dans la session
-            $_SESSION['utilisateur'] = $user['id'];
+            $_SESSION['utilisateur'] = $user['id_membre'];
             $_SESSION['email'] = $user['email'];
-
-            // Redirection vers la page d'accueil ou une autre page sécurisée
-            header('Location: ../Template/dashboard.php');
+            header('Location: dashboard.php');
             exit();
         } else {
+            // Mot de passe incorrect
             $_SESSION['error'] = 'Mot de passe incorrect.';
         }
     } else {
-        $_SESSION['error'] = 'Utilisateur introuvable.';
+        // Email non trouvé
+        $_SESSION['error'] = 'Aucun compte associé à cet email.';
     }
 
-    // Redirection en cas d'erreur
-    header('Location: login.php');
+    // Redirection vers Login.php avec un message d'erreur
+    header('Location: Login.php');
     exit();
 }
