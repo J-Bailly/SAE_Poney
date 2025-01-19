@@ -8,30 +8,31 @@
 </head>
 <body>
 <?php require(__DIR__ . '/../Template/header.php'); ?>
+<?php require(__DIR__ . '/../Classes/Form/Database.php'); ?>
 
 <?php
-require_once(__DIR__ .'/../Classes/Form/Database.php');
-
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    // Récupérer les données du formulaire
-    $nom = $_POST['nom'];
-    $prenom = $_POST['prenom'];
-    $email = $_POST['email'];
-    $poids = $_POST['poids'];
-    $motDePasse = $_POST['password']; // Récupérer le mot de passe
-    $dateInscription = date('Y-m-d');  // Utilisation de la date actuelle
+    $nom = trim($_POST['nom']);
+    $prenom = trim($_POST['prenom']);
+    $email = trim($_POST['email']);
+    $poids = floatval($_POST['poids']);
+    $motDePasse = password_hash(trim($_POST['password']), PASSWORD_BCRYPT);
+    $dateInscription = date('Y-m-d');
 
-    // Initialiser la connexion à la base de données
-    $db = new \Classes\Form\Database('../../BD/BD.sqlite');
+    try {
+        $pdo = new PDO('sqlite:' . __DIR__ . '/../../BD/BD.sqlite');
+        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-    // Appel de la méthode inscrireMembre pour enregistrer le membre
-    $resultat = $db->inscrireMembre($nom, $prenom, $email, $motDePasse, $poids, $dateInscription);
+        $db = new Database($pdo); // Initialisation correcte
+        $resultat = $db->inscrireMembre($nom, $prenom, $email, $motDePasse, $poids, $dateInscription);
 
-    // Message de confirmation ou d'erreur
-    if ($resultat) {
-        echo "<p>Membre inscrit avec succès!</p>";
-    } else {
-        echo "<p>Une erreur est survenue lors de l'inscription. Veuillez réessayer.</p>";
+        if ($resultat) {
+            echo "<p style='color: green;'>Membre inscrit avec succès !</p>";
+        } else {
+            echo "<p style='color: red;'>Une erreur est survenue lors de l'inscription. Veuillez réessayer.</p>";
+        }
+    } catch (PDOException $e) {
+        die("Erreur de connexion : " . $e->getMessage());
     }
 }
 ?>
@@ -51,7 +52,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <label for="poids">Poids (en kg) :</label>
     <input type="number" id="poids" name="poids" step="0.01" required><br><br>
 
-    <!-- Nouveau champ pour le mot de passe -->
     <label for="password">Mot de passe :</label>
     <input type="password" id="password" name="password" required><br><br>
 

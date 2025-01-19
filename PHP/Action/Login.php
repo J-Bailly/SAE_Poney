@@ -1,5 +1,14 @@
+<?php require(__DIR__ . '/../Template/header.php'); ?>
 <?php
 session_start();
+
+
+try {
+    $pdo = new PDO('sqlite:' . __DIR__ . '/../../BD/BD.sqlite');
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+} catch (PDOException $e) {
+    die("Erreur de connexion : " . $e->getMessage());
+}
 
 // Récupérer le message d'erreur de la session s'il existe
 $error = isset($_SESSION['error']) ? $_SESSION['error'] : null;
@@ -16,7 +25,7 @@ unset($_SESSION['error']);
     <link rel="stylesheet" href="../../css/styles.css">
 </head>
 <body>
-<?php require(__DIR__ . '/../Template/header.php'); ?>
+
 
 <main>
     <h1>Connexion</h1>

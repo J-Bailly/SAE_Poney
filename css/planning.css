@@ -202,3 +202,29 @@ a.day-link:hover .day {
     text-decoration: none;
     font-size: 20px;
 }
+
+/* Conteneur des liens de navigation */
+.calendar-header div a {
+    text-decoration: none; /* Supprimer le soulignement */
+    color: white; /* Couleur du texte */
+    background-color: #A5B68D; /* Même couleur que le footer */
+    padding: 5px 10px; /* Espacement interne pour un effet bouton */
+    border-radius: 5px; /* Coins arrondis */
+    font-size: 0.9rem; /* Taille du texte */
+    margin: 0 5px; /* Espacement entre les liens */
+    transition: background-color 0.3s ease; /* Animation au survol */
+}
+
+/* Changement de couleur au survol */
+.calendar-header div a:hover {
+    background-color: #8C9C73; /* Couleur légèrement plus foncée */
+    color: #fff; /* Assurez-vous que le texte reste lisible */
+}
+
+/* Aligner les liens de navigation */
+.calendar-header div {
+    display: flex;
+    justify-content: center; /* Centrer horizontalement les liens */
+    gap: 10px; /* Espacement entre les liens */
+    margin-top: 10px; /* Espacement avec le titre */
+}
