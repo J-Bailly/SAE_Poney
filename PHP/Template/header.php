@@ -30,9 +30,6 @@
             <img src="../img//Fleur.png" alt="fleur">
         </div>
     </div>
-    <main>
-        <?= isset($content) ? $content : '<p>Contenu non disponible.</p>' ?>
-    </main>
     <div class="footer">
         <p>&copy; 2025 Poney Club Grand Galop | Tous droits réservés | Contactez-nous pour plus d'informations.</p>
     </div>
