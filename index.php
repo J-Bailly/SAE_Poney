@@ -35,8 +35,8 @@
             <li>Les cotisations annuelles sont à régler en début d’année et chaque cours réservé est facturé individuellement.</li>
         </ul>
     </section>
-<?php 
-$content = ob_get_clean(); 
+<?php
+$content = ob_get_clean();
 require('PHP/Template/header_home.php');
 ?>
 </body>

@@ -13,7 +13,7 @@
         <nav class="navigation">
             <a href="#">Accueil</a>
             <a href="PHP/Action/Planning.php">Planning</a>
-            <a href="PHP/Action/NousContacter.php">Nous Contacter</a>
+            <a href="PHP/Action/Reservations.php">Mes Réservations</a>
         </nav>
         <div>
             <a href="PHP/Action/Signup.php"><button class="sign-up-button">S'inscrire</button></a>
