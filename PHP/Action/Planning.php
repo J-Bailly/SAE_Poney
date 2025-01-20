@@ -1,7 +1,5 @@
 <?php require(__DIR__ . '/../Template/header.php'); ?>
 <?php
-
-
 try {
     $pdo = new PDO('sqlite:' . __DIR__ . '/../../BD/BD.sqlite');
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -64,7 +62,6 @@ $liste_poneys = $stmt_poneys->fetchAll(PDO::FETCH_ASSOC);
                             }
                             echo $prev_mois; 
                         ?>&annee=<?php echo $prev_annee; ?>">&lt; Mois Précédent</a> |
-
                         <a href="?mois=<?php 
                             if (($mois + 1) >= 13) {
                                 $next_mois = 1; 
@@ -112,7 +109,8 @@ $liste_poneys = $stmt_poneys->fetchAll(PDO::FETCH_ASSOC);
                             <div class='modal-content'>
                                 <a href='#' class='close'>&times;</a>
                                 <h2>Cours disponibles pour le $date</h2>
-                                <form>
+                                <form action='Reserver.php' method='POST'>
+                                    <input type='hidden' name='date' value='$date'>
                                     <label for='cours-$jour'>Sélectionnez un cours :</label>
                                     <select id='cours-$jour' name='cours'>";
                         if (isset($cours_par_jour[$date])) {
@@ -126,6 +124,7 @@ $liste_poneys = $stmt_poneys->fetchAll(PDO::FETCH_ASSOC);
 
                                     <label for='poney-$jour'>Sélectionnez un poney :</label>
                                     <select id='poney-$jour' name='poney'>";
+
                         foreach ($liste_poneys as $poney) {
                             echo "<option value='{$poney['id_poney']}'>{$poney['nom']}</option>";
                         }

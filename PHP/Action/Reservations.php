@@ -1,6 +1,7 @@
 <?php require(__DIR__ . '/../Template/header.php'); ?>
 <?php
 
+// Vérifier si l'utilisateur est connecté
 if (!isset($_SESSION['user_id'])) {
     header("Location: Login.php");
     exit;
@@ -15,7 +16,7 @@ try {
 }
 
 // Récupérer l'ID utilisateur depuis la session
-$user_id = 1;
+$user_id = $_SESSION['user_id']; // Utilisation de l'ID de l'utilisateur connecté
 
 // Récupérer les réservations de l'utilisateur
 $query = '
@@ -45,12 +46,33 @@ $reservations = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mes Réservations</title>
     <link rel="stylesheet" href="../../css/styles.css">
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .no-reservations {
+            text-align: center;
+            font-size: 18px;
+            color: #777;
+        }
+    </style>
 </head>
 <body>
     <section>
         <h1>Mes Réservations</h1>
+        
         <?php if (empty($reservations)) : ?>
-            <p>Vous n'avez aucune réservation pour le moment.</p>
+            <p class="no-reservations">Vous n'avez aucune réservation pour le moment.</p>
         <?php else : ?>
             <table>
                 <thead>
@@ -71,7 +93,7 @@ $reservations = $stmt->fetchAll(PDO::FETCH_ASSOC);
                             <td><?= htmlspecialchars($reservation['cours_heure']) ?></td>
                             <td><?= htmlspecialchars($reservation['cours_duree']) ?></td>
                             <td><?= htmlspecialchars($reservation['cours_categorie']) ?></td>
-                            <td><?= htmlspecialchars($reservation['cours_prix']) ?></td>
+                            <td><?= htmlspecialchars($reservation['cours_prix']) ?> €</td>
                         </tr>
                     <?php endforeach; ?>
                 </tbody>

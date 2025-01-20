@@ -89,6 +89,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <input type="number" id="poids" name="poids" step="0.01" required><br><br>
     <label for="password">Mot de passe :</label>
     <input type="password" id="password" name="password" required><br><br>
+    <br>
+    <p>Si vous possèdez déjà un compte chez nous, <a href="login.php">Connectez vous </a>!</p>
     <input type="submit" value="S'inscrire">
 </form>
 
