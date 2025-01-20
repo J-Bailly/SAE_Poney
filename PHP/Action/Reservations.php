@@ -1,5 +1,5 @@
+<?php require(__DIR__ . '/../Template/header.php'); ?>
 <?php
-
 
 if (!isset($_SESSION['user_id'])) {
     header("Location: Login.php");
@@ -15,7 +15,7 @@ try {
 }
 
 // Récupérer l'ID utilisateur depuis la session
-$user_id = $_SESSION['user_id'];
+$user_id = 1;
 
 // Récupérer les réservations de l'utilisateur
 $query = '

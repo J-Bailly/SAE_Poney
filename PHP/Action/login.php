@@ -41,7 +41,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 // Connexion réussie
                 $_SESSION['user_id'] = $user['id_membre'];
                 $_SESSION['user_name'] = $user['prenom'] . ' ' . $user['nom'];
-                header("Location: dashboard.php");
+                header("Location: Planning.php");
                 exit;
             } else {
                 // Mauvais mot de passe
@@ -61,7 +61,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
-    
+    <link rel="stylesheet" href="../../css/styles.css">
 </head>
 <body>
     <h1>Connexion</h1>

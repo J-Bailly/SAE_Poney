@@ -17,7 +17,7 @@
         </nav>
         <div>
             <a href="PHP/Action/Signup.php"><button class="sign-up-button">S'inscrire</button></a>
-            <a href="PHP/Action/Login.php"><button class="sign-up-button">Se connecter</button></a>
+            <a href="PHP/Action/login.php"><button class="sign-up-button">Se connecter</button></a>
         </div>
     </header>
     <div class="design-entete">
@@ -30,6 +30,9 @@
             <img src="PHP/img/Fleur.png" alt="fleur">
         </div>
     </div>
+    <main>
+    <?= $content ?>
+    </main>
     <div class="footer">
         <p>&copy; 2025 Poney Club Grand Galop | Tous droits réservés | Contactez-nous pour plus d'informations.</p>
     </div>

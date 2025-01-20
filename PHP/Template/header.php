@@ -25,7 +25,7 @@ session_start(); // Assure-toi que la session est démarrée pour accéder aux i
                 <a href="logout.php"><button class="sign-up-button">Se déconnecter</button></a>
             <?php else: // Si l'utilisateur n'est pas connecté ?>
                 <a href="Signup.php"><button class="sign-up-button">S'inscrire</button></a>
-                <a href="Login.php"><button class="sign-up-button">Se connecter</button></a>
+                <a href="login.php"><button class="sign-up-button">Se connecter</button></a>
             <?php endif; ?>
         </div>
     </header>
