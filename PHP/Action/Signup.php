@@ -10,6 +10,7 @@
 <?php require(__DIR__ . '/../Template/header.php'); ?>
 
 <?php
+
 try {
     // Connexion à la base de données
     $pdo = new PDO('sqlite:' . __DIR__ . '/../../BD/BD.sqlite');
@@ -27,7 +28,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $motDePasse = trim($_POST['password']);
     $dateInscription = date('Y-m-d');
 
-    // Validation de base
+    // Validation des données
     $errors = [];
     if (empty($nom)) $errors[] = "Le nom est requis.";
     if (empty($prenom)) $errors[] = "Le prénom est requis.";
@@ -43,13 +44,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             if ($query->fetchColumn() > 0) {
                 echo "<p style='color: red;'>Cet email est déjà utilisé. Veuillez en choisir un autre.</p>";
             } else {
-                // Insérer les données dans la base
+                // Insérer l'utilisateur
                 $motDePasseHash = password_hash($motDePasse, PASSWORD_BCRYPT);
                 $query = $pdo->prepare("
                     INSERT INTO MEMBRE (nom, prenom, email, poids, password, date_inscription)
                     VALUES (:nom, :prenom, :email, :poids, :motDePasse, :dateInscription)
                 ");
-                $resultat = $query->execute([
+                $query->execute([
                     'nom' => $nom,
                     'prenom' => $prenom,
                     'email' => $email,
@@ -58,9 +59,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     'dateInscription' => $dateInscription,
                 ]);
 
-                echo $resultat
-                    ? "<p style='color: green;'>Membre inscrit avec succès !</p>"
-                    : "<p style='color: red;'>Une erreur est survenue lors de l'inscription. Veuillez réessayer.</p>";
+                // Connexion automatique
+                $user_id = $pdo->lastInsertId();
+                $_SESSION['user_id'] = $user_id;
+                $_SESSION['user_name'] = $prenom . ' ' . $nom;
+                header("Location: Reservations.php"); // Redirection après connexion
+                exit;
             }
         } catch (PDOException $e) {
             echo "<p style='color: red;'>Erreur lors de l'inscription : " . htmlspecialchars($e->getMessage()) . "</p>";

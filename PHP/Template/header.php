@@ -1,3 +1,7 @@
+<?php
+session_start(); // Assure-toi que la session est démarrée pour accéder aux informations de l'utilisateur
+?>
+
 <!DOCTYPE html>
 <html lang="fr">
 
@@ -16,8 +20,13 @@
             <a href="Reservations.php">Mes Réservations</a>
         </nav>
         <div>
-            <a href="Signup.php"><button class="sign-up-button">S'inscrire</button></a>
-            <a href="Login.php"><button class="sign-up-button">Se connecter</button></a>
+            <?php if (isset($_SESSION['user_id'])): // Si l'utilisateur est connecté ?>
+                <span>Bienvenue, <?php echo htmlspecialchars($_SESSION['user_name']); ?>!</span>
+                <a href="logout.php"><button class="sign-up-button">Se déconnecter</button></a>
+            <?php else: // Si l'utilisateur n'est pas connecté ?>
+                <a href="Signup.php"><button class="sign-up-button">S'inscrire</button></a>
+                <a href="Login.php"><button class="sign-up-button">Se connecter</button></a>
+            <?php endif; ?>
         </div>
     </header>
     <div class="design-entete">

@@ -27,12 +27,9 @@
             <h1>KavalKenny Klub</h1>
         </div>
         <div class="inverser">
-            <img src="PHP/img//Fleur.png" alt="fleur">
+            <img src="PHP/img/Fleur.png" alt="fleur">
         </div>
     </div>
-    <main>
-        <?= $content ?>
-    </main>
     <div class="footer">
         <p>&copy; 2025 Poney Club Grand Galop | Tous droits réservés | Contactez-nous pour plus d'informations.</p>
     </div>

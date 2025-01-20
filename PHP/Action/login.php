@@ -1,5 +1,5 @@
+<?php require(__DIR__ . '/../Template/header.php'); ?>
 <?php
-session_start();
 
 try {
     // Connexion à la base de données
@@ -9,42 +9,77 @@ try {
     die("Erreur de connexion à la base de données : " . $e->getMessage());
 }
 
-// Vérifier si l'email et le mot de passe sont envoyés
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['email'], $_POST['password'])) {
-    $email = trim($_POST['email']);
-    $password = trim($_POST['password']);
-
-    // Récupérer l'utilisateur correspondant à l'email
-    $query = "SELECT * FROM MEMBRE WHERE email = :email";
-    $stmt = $pdo->prepare($query);
-    $stmt->bindParam(':email', $email, PDO::PARAM_STR);
-    $stmt->execute();
-
-    $user = $stmt->fetch(PDO::FETCH_ASSOC);
-
-    if ($user) {
-        // Vérifier le mot de passe
-        if (password_verify($password, $user['password'])) { // Assurez-vous d'utiliser password_hash lors de l'inscription
-            // Connexion réussie : stocker les infos de l'utilisateur dans la session
-            $_SESSION['user_id'] = $user['id_membre'];
-            $_SESSION['user_name'] = $user['prenom'] . ' ' . $user['nom'];
-            header("Location: dashboard.php"); // Rediriger vers le tableau de bord ou une autre page sécurisée
-            exit;
-        } else {
-            // Mauvais mot de passe
-            $_SESSION['error'] = "Mot de passe incorrect.";
-            header("Location: login.php");
-            exit;
-        }
-    } else {
-        // Email non trouvé
-        $_SESSION['error'] = "Aucun utilisateur trouvé avec cet email.";
-        header("Location: login.php");
-        exit;
-    }
-} else {
-    // Accès non autorisé ou données manquantes
-    $_SESSION['error'] = "Veuillez remplir tous les champs.";
-    header("Location: login.php");
+// Empêcher les utilisateurs déjà connectés d'accéder à cette page
+if (isset($_SESSION['user_id'])) {
+    header("Location: /../../index.php");
     exit;
 }
+
+// Initialiser un message d'erreur vide
+$errorMessage = "";
+
+// Traitement du formulaire
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $email = trim($_POST['email'] ?? '');
+    $password = trim($_POST['password'] ?? '');
+
+    // Vérification des champs
+    if (empty($email) || empty($password)) {
+        $errorMessage = "Veuillez remplir tous les champs.";
+    } else {
+        // Recherche de l'utilisateur dans la base de données
+        $query = "SELECT * FROM MEMBRE WHERE email = :email";
+        $stmt = $pdo->prepare($query);
+        $stmt->bindParam(':email', $email, PDO::PARAM_STR);
+        $stmt->execute();
+
+        $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if ($user) {
+            // Vérification du mot de passe
+            if (password_verify($password, $user['password'])) {
+                // Connexion réussie
+                $_SESSION['user_id'] = $user['id_membre'];
+                $_SESSION['user_name'] = $user['prenom'] . ' ' . $user['nom'];
+                header("Location: dashboard.php");
+                exit;
+            } else {
+                // Mauvais mot de passe
+                $errorMessage = "Mot de passe incorrect.";
+            }
+        } else {
+            // Aucun utilisateur trouvé
+            $errorMessage = "Aucun utilisateur trouvé avec cet email.";
+        }
+    }
+}
+?>
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    
+</head>
+<body>
+    <h1>Connexion</h1>
+
+    <!-- Afficher le message d'erreur si nécessaire -->
+    <?php if (!empty($errorMessage)): ?>
+        <p style="color: red;"><?php echo htmlspecialchars($errorMessage); ?></p>
+    <?php endif; ?>
+
+    <!-- Formulaire de connexion -->
+    <form method="POST" action="Login.php">
+        <label for="email">Email :</label>
+        <input type="email" name="email" id="email" required>
+        <br>
+        <label for="password">Mot de passe :</label>
+        <input type="password" name="password" id="password" required>
+        <br>
+        <button type="submit">Se connecter</button>
+    </form>
+</body>
+</html>

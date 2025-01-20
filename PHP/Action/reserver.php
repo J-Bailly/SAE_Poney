@@ -1,5 +1,4 @@
 <?php
-session_start();
 $pdo = new PDO('sqlite:' . __DIR__ . '/../../BD/BD.sqlite');
 $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
@@ -12,6 +11,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $stmt = $pdo->prepare('INSERT INTO RESERVATIONS (id_cours, id_poney, nom_utilisateur) VALUES (?, ?, ?)');
     $stmt->execute([$id_cours, $id_poney, $nom_utilisateur]);
 
-    header('Location: planning.php');
+    header('Location: Planning.php');
     exit();
 }

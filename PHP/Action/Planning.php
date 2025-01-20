@@ -1,6 +1,6 @@
 <?php require(__DIR__ . '/../Template/header.php'); ?>
 <?php
-session_start();
+
 
 try {
     $pdo = new PDO('sqlite:' . __DIR__ . '/../../BD/BD.sqlite');
